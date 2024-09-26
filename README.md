@@ -46,7 +46,7 @@
       http
         .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
       ```
-    - 여기까지 로그인 인증 작업이 완료되었다. 이제 이 유저 정보를 이용해 DB 데이터와 비교하고([4](#4)), 일치하면 JWT 토큰을 발급해서 클라이언트에게 보내줘야 한다. 그후 클라이언트가 이 토큰을 이용해 접근할 수 있도록 또 다른 필터(JWTFilter)를 등록하는 작업을 진행해야 한다.
+    - 여기까지 로그인 인증 작업이 완료되었다. 이제 이 유저 정보를 이용해 DB 데이터와 비교하고([4](#4-db-유저-정보-검증)), 일치하면 JWT 토큰을 발급해서 클라이언트에게 보내줘야 한다.([5](#5-jwt-발급-클래스-작성)) 그후 클라이언트가 이 토큰을 이용해 접근할 수 있도록 또 다른 필터(JWTFilter)를 등록하는 작업을 진행해야 한다.([6](#6. ))
 
 ## 4. DB 유저 정보 검증
 
