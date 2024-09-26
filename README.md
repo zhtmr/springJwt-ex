@@ -50,6 +50,34 @@
 
 ## 4. DB 유저 정보 검증
 
+![img_3.png](img_3.png)*출처: https://goldenrabbit.co.kr/2024/04/05/spring-%EC%8A%A4%ED%94%84%EB%A7%81-%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0%EB%9E%80/*
+
+스프링 시큐리티는 사용자 정보를 가져오는데 UserDetailService 를 사용한다. 이 클래스를 상속 받은 뒤 loadUserByUsername() 을 오버라이드하면 스프링 시큐리티에서 오버라이드된 메서드를 사용하게 된다.
+```java
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+  private final UserRepository userRepository;
+
+  public CustomUserDetailsService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    User user = userRepository.findByUsername(username);
+    if (user != null) {
+      //UserDetails에 담아서 return하면 AuthenticationManager 검증 함
+      return new CustomUserDetails(user);
+    }
+    return null;
+  }
+}
+```
+
+UserDetailsService 는 사용자 정보를 UserDetail 객체에 담아서 AuthenticationManager 에 전달하도록 구성해야 한다. 이를 위해 UserDetails 를 오버라이드 한 [CustomUserDetails](https://github.com/zhtmr/springJwt-ex/blob/c84845a1161854ead757761ff31ee5d58460f49d/src/main/java/com/ex/springjwtex/dto/CustomUserDetails.java) 를 만든다.
+
+
+
 ## 5. JWT 발급 클래스 작성
 ### jwt 구조
 jwt 는 header / payload / signature 구조로 이루어져 있다.
@@ -88,4 +116,6 @@ implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
 [JWTUtil](https://github.com/zhtmr/springJwt-ex/blob/1fe7a4c86eb4a6e04cd9c6ab3cdfa1a3f8f80ca3/src/main/java/com/ex/springjwtex/jwt/JWTUtil.java) 클래스에서 application.properties 에 정의한 secret key 값을 가져와 객체 형태로 만든다.
 
+
+## 6.
 
