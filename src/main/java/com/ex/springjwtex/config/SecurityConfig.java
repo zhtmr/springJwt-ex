@@ -1,5 +1,6 @@
 package com.ex.springjwtex.config;
 
+import com.ex.springjwtex.jwt.JWTFilter;
 import com.ex.springjwtex.jwt.JWTUtil;
 import com.ex.springjwtex.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +59,9 @@ public class SecurityConfig {
             .requestMatchers("/login", "/", "/join").permitAll()
             .requestMatchers("/admin").hasRole("ADMIN")
             .anyRequest().authenticated());
+
+    // 로그인 필터 앞에 jwt 토큰 검증 필터를 넣는다
+    http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
     //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
     http
