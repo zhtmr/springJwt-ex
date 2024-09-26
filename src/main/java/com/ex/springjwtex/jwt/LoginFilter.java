@@ -41,7 +41,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //token에 담은 검증을 위한 AuthenticationManager로 전달
     return authenticationManager.authenticate(authToken);
-
   }
 
   //로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
